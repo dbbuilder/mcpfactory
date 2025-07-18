@@ -1,5 +1,24 @@
+# =====================================
+# Node.js and Frontend Development
+# =====================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+.output/
+.cache/
+.parcel-cache/
+.vite/
+*.local
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,32 +26,203 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.staging.local
 
-# Editor directories and files
+# =====================================
+# Testing
+# =====================================
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Test results
+test-results/
+playwright-report/
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+
+# =====================================
+# Editor and IDE Files
+# =====================================
+
+# Visual Studio Code
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+.history/
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*.swn
+.*.swp
+.*.swo
+.*.swn
+Session.vim
+.netrwhist
+
+# Visual Studio
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.vspscc
+*.vssscc
 
-# Environment files
-.env
-.env.local
-.env.production.local
+# =====================================
+# Operating System Files
+# =====================================
 
-# Build outputs
-/dist
-/build
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
 
-# Package lock files (use npm for consistency)
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# =====================================
+# Build Tools and Package Managers
+# =====================================
+
+# Package lock files (if using npm, comment out the one you use)
+# package-lock.json
 yarn.lock
 pnpm-lock.yaml
-.vercel
+
+# npm
+.npm/
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# TypeScript
+*.tsbuildinfo
+*.d.ts.map
+
+# Webpack
+.webpack/
+
+# Rollup
+.rollup.cache/
+
+# =====================================
+# Deployment
+# =====================================
+
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# AWS
+.aws/
+
+# =====================================
+# Temporary Files
+# =====================================
+
+# General
+*.tmp
+*.temp
+*.cache
+tmp/
+temp/
+cache/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# =====================================
+# Security
+# =====================================
+
+# SSL Certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# API Keys (should never be committed)
+*.secret
+secrets.json
+
+# =====================================
+# Miscellaneous
+# =====================================
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Debug files
+*.stackdump
+core.*
+
+# =====================================
+# Project Specific
+# =====================================
+
+# Generated files
+generated/
+auto-generated/
+
+# User uploads (if applicable)
+uploads/
+public/uploads/
+
+# Local development
+local-data/
+scratch/
+.sandbox/
