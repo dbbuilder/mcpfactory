@@ -19,43 +19,29 @@ export function removeBOM(str) {
  */
 export function safeJsonParse(jsonString) {
   try {
+    // Validate input
+    if (typeof jsonString !== 'string') {
+      throw new Error('Input must be a string')
+    }
+    
+    if (jsonString.trim() === '') {
+      throw new Error('Empty JSON string')
+    }
+    
     // Remove BOM if present
     const cleanString = removeBOM(jsonString.trim())
     
     // Try to parse
     return {
       success: true,
-      data: JSON.parse(cleanString)
+      data: JSON.parse(cleanString),
+      error: null
     }
   } catch (error) {
-    // Try to extract line and column from error
-    const match = error.message.match(/position (\d+)/)
-    const position = match ? parseInt(match[1]) : null
-    
-    // Try to find the problematic line
-    let line = null
-    let column = null
-    if (position !== null) {
-      const lines = jsonString.split('\n')
-      let currentPosition = 0
-      for (let i = 0; i < lines.length; i++) {
-        if (currentPosition + lines[i].length >= position) {
-          line = i + 1
-          column = position - currentPosition
-          break
-        }
-        currentPosition += lines[i].length + 1 // +1 for newline
-      }
-    }
-    
     return {
       success: false,
-      error: {
-        message: error.message,
-        line,
-        column,
-        position
-      }
+      data: null,
+      error
     }
   }
 }
@@ -101,7 +87,7 @@ export function validateJson(jsonString) {
   if (!result.success) {
     return {
       valid: false,
-      error: result.error
+      error: result.error.message
     }
   }
   
@@ -138,7 +124,17 @@ export function validateJson(jsonString) {
  */
 export function formatJson(obj, indent = 2) {
   try {
-    return JSON.stringify(obj, null, indent)
+    // Handle circular references
+    const seen = new WeakSet()
+    return JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return '[Circular]'
+        }
+        seen.add(value)
+      }
+      return value
+    }, indent)
   } catch (error) {
     throw new Error(`Failed to format JSON: ${error.message}`)
   }
@@ -176,11 +172,51 @@ export async function convertToJson(content, type) {
 }
 
 /**
- * Detect file type from content
+ * Detect file type from filename and content
+ * @param {string} filename - File name
  * @param {string} content - File content
  * @returns {string} Detected file type
  */
-export function detectFileType(content) {
+export function detectFileType(filename, content = '') {
+  // Check by file extension first
+  const ext = filename.split('.').pop().toLowerCase()
+  
+  // OpenAPI/Swagger
+  if (ext === 'json' || ext === 'yaml' || ext === 'yml') {
+    if (content.includes('openapi') || content.includes('swagger')) {
+      return 'openapi'
+    }
+  }
+  
+  // GraphQL
+  if (ext === 'graphql' || ext === 'gql') {
+    return 'graphql'
+  }
+  
+  // Protocol Buffers
+  if (ext === 'proto') {
+    return 'protobuf'
+  }
+  
+  // Python
+  if (ext === 'py') {
+    return 'python'
+  }
+  
+  // JavaScript/TypeScript
+  if (ext === 'js' || ext === 'mjs' || ext === 'cjs') {
+    return 'javascript'
+  }
+  if (ext === 'ts' || ext === 'tsx') {
+    return 'typescript'
+  }
+  
+  // SQL/Database
+  if (ext === 'sql') {
+    return 'database'
+  }
+  
+  // Fallback to content detection
   const trimmed = content.trim()
   
   // JSON detection
@@ -253,19 +289,24 @@ export function validateOpenApiSpec(spec) {
     errors.push('Missing openapi or swagger version field')
   }
   
+  // Check OpenAPI version
+  if (spec.openapi && !spec.openapi.startsWith('3.')) {
+    errors.push(`Unsupported OpenAPI version: ${spec.openapi}`)
+  }
+  
   if (!spec.info) {
-    errors.push('Missing required info object')
+    errors.push('Missing required field: info')
   } else {
-    if (!spec.info.title) errors.push('Missing info.title')
-    if (!spec.info.version) errors.push('Missing info.version')
+    if (!spec.info.title) errors.push('Missing required field: info.title')
+    if (!spec.info.version) errors.push('Missing required field: info.version')
   }
   
   if (!spec.paths) {
-    errors.push('Missing required paths object')
+    errors.push('Missing required field: paths')
   }
   
   // Check for common issues
-  if (spec.openapi && spec.openapi.startsWith('2.')) {
+  if (spec.swagger) {
     warnings.push('Using OpenAPI 2.x (Swagger) - consider upgrading to 3.x')
   }
   
@@ -274,4 +315,21 @@ export function validateOpenApiSpec(spec) {
     errors,
     warnings
   }
+}
+
+/**
+ * Format file size in human readable format
+ * @param {number} bytes - File size in bytes
+ * @returns {string} Formatted file size
+ */
+export function formatFileSize(bytes) {
+  if (bytes <= 0) return '0 Bytes'
+  
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  
+  const size = bytes / Math.pow(k, i)
+  // Always show one decimal place for KB and above
+  return (i === 0 ? size : size.toFixed(1)) + ' ' + sizes[i]
 }
