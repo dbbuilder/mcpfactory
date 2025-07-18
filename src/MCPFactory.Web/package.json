@@ -1,5 +1,5 @@
 {
-  "name": "mcpfactory.web",
+  "name": "mcpfactory-web",
   "version": "1.0.0",
   "type": "module",
   "description": "",
@@ -19,7 +19,8 @@
     "@vitejs/plugin-vue": "^4.6.2",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^3.4.17",
+    "vercel": "^44.4.3",
     "vite": "^5.4.19",
     "vue": "^3.5.17"
   },
