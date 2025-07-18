@@ -46,6 +46,12 @@ const routes = [
     name: 'import',
     component: () => import('@/views/ImportView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard/projects/:id',
+    name: 'project-detail',
+    component: () => import('@/views/ProjectDetailView.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 

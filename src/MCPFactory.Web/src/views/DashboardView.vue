@@ -26,7 +26,7 @@
 
       <!-- Stats -->
       <div class="mt-8">
-        <DashboardStats :stats="stats" />
+        <DashboardStats :stats="stats" :loading="loading" />
       </div>
 
       <!-- Filters and Search -->
@@ -69,12 +69,10 @@
       </div>
 
       <!-- Projects Grid -->
-      <div v-if="loading" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="bg-gray-800 rounded-lg p-6 animate-pulse">
-          <div class="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
-          <div class="h-3 bg-gray-700 rounded w-full mb-2"></div>
-          <div class="h-3 bg-gray-700 rounded w-5/6"></div>
-        </div>
+      <div v-if="loading" class="mt-8">
+        <SkeletonLoader type="card" :animated="true" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div v-for="i in 6" :key="i"></div>
+        </SkeletonLoader>
       </div>
 
       <div v-else-if="projects.length === 0" class="mt-8 text-center">
@@ -124,6 +122,7 @@ import { useProjectsStore } from '@/stores/projects'
 import DashboardStats from '@/components/dashboard/DashboardStats.vue'
 import ProjectCard from '@/components/dashboard/ProjectCard.vue'
 import CreateProjectModal from '@/components/dashboard/CreateProjectModal.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const router = useRouter()
 const projectsStore = useProjectsStore()
