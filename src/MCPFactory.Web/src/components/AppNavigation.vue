@@ -23,12 +23,22 @@
           </div>
         </div>
         <div class="flex items-center space-x-4">
-          <router-link to="/dashboard" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-            Sign in
-          </router-link>
-          <router-link to="/" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-md text-sm font-semibold transition-all">
-            Start Free
-          </router-link>
+          <template v-if="!isAuthenticated">
+            <router-link to="/login" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              Sign in
+            </router-link>
+            <router-link to="/register" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-md text-sm font-semibold transition-all">
+              Start Free
+            </router-link>
+          </template>
+          <template v-else>
+            <router-link to="/dashboard" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              Dashboard
+            </router-link>
+            <button @click="handleLogout" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              Sign out
+            </button>
+          </template>
         </div>
         <div class="md:hidden">
           <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-400 hover:text-white p-2">
@@ -69,11 +79,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+
 const mobileMenuOpen = ref(false)
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const navigation = [
   { name: 'Features', to: '/#features' },
@@ -81,4 +96,9 @@ const navigation = [
   { name: 'Pricing', to: '/pricing' },
   { name: 'Docs', to: '/docs' }
 ]
+
+const handleLogout = async () => {
+  await authStore.logout()
+  router.push('/')
+}
 </script>
