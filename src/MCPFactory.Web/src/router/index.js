@@ -40,6 +40,12 @@ const routes = [
     name: 'dashboard',
     component: () => import('@/views/DashboardView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/import',
+    name: 'import',
+    component: () => import('@/views/ImportView.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
