@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: MCPFactory API
+  description: |
+    # MCPFactory Universal API
+    
+    Transform any code interface into a certified MCP server. Import REST APIs, GraphQL endpoints, 
+    Python libraries, JavaScript modules, or any code - we'll generate a compliant MCP server ready 
+    for AI assistants.
+    
+    ## Quick Start
+    
+    1. **Import** - Upload code, API specs, or provide repository URL
+    2. **Configure** - Map functions to MCP tools with AI assistance  
+    3. **Test** - Validate MCP compliance and functionality
+    4. **Deploy** - Host with us or download for self-hosting
+    
+    ## Supported Inputs
+    
+    - REST APIs (OpenAPI/Swagger)
+    - GraphQL schemas
+    - Python packages/modules
+    - JavaScript/TypeScript libraries
+    - Go packages
+    - Database schemas
+    - Any documented code interface
+    
+  version: 2.0.0
+  termsOfService: https://mcpfactory.net/terms
+  contact:
+    name: MCPFactory Support
+    email: support@mcpfactory.net
